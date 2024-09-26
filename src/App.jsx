@@ -2,6 +2,7 @@ import './App.css'
 import { useState } from 'react'
 import List from './components/List'
 import Form from './components/Form';
+import { ToDoContext } from './context/ToDoContext'
 
 
 function App() {
@@ -36,9 +37,7 @@ function App() {
   }
 
   return (
-    <>
-      <h1>Tarefas que preciso fazer</h1>
-
+    <ToDoContext.Provider value={{tasks, addToDo, changeAddTask}}>
       {
         addTask ?
           <Form newTask={addToDo} change={changeAddTask}/>
@@ -48,11 +47,11 @@ function App() {
             <p>Deseja adicionar uma tarefa?</p>
             <button onClick={changeAddTask}>Sim</button>
           </div>
-          <List list={tasks}/>  
+          <List/>  
         </>
       }
       
-    </>
+    </ToDoContext.Provider>
   )
 }
 

@@ -1,7 +1,10 @@
 import React from "react";
 import { useState } from "react";
+import useToDoContext from "../hook/useToDoContext";
 
-export default ({newTask, change}) => {
+export default () => {
+    const { addToDo, changeAddTask } = useToDoContext(); 
+
     const [title, setTitle] = useState("")
     const [description, setDescription] = useState("")
     const [priority, setPriority] = useState("")
@@ -18,8 +21,8 @@ export default ({newTask, change}) => {
         setCategory("");
         console.log(title, description, priority, category);
         
-        change();
-        newTask(title, description, priority, category);
+        changeAddTask();
+        addToDo(title, description, priority, category);
     }
 
     return(
