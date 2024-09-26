@@ -8,7 +8,7 @@ export default function useToDoContext() {
         throw new Error('fora do contexto');
     }
 
-    console.log(context)
+    // console.log(context)
 
     return context;
 }

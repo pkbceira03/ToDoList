@@ -18,29 +18,16 @@ function App() {
     },
   ]);
 
-  function addToDo(title, description, pririty, category){
-    const newTask = [...tasks, 
-      {
-        id: Math.floor(Math.random() * 10000),
-        title,
-        description,
-        pririty,
-        category,
-        isComplety:false
-      },
-    ];
-    setTasks(newTask)
-  }
 
   function changeAddTask(){
     setAddTask(!addTask)
   }
 
   return (
-    <ToDoContext.Provider value={{tasks, addToDo, changeAddTask}}>
+    <ToDoContext.Provider value={{tasks, setTasks, changeAddTask}}>
       {
         addTask ?
-          <Form newTask={addToDo} change={changeAddTask}/>
+          <Form />
         :
         <>
           <div>

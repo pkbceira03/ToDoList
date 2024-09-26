@@ -3,27 +3,43 @@ import { useState } from "react";
 import useToDoContext from "../hook/useToDoContext";
 
 export default () => {
-    const { addToDo, changeAddTask } = useToDoContext(); 
+    const { tasks, setTasks, changeAddTask } = useToDoContext(); 
 
     const [title, setTitle] = useState("")
     const [description, setDescription] = useState("")
     const [priority, setPriority] = useState("")
     const [category, setCategory] = useState("")
 
+    function addToDo(title, description, pririty, category){
+        const newTask = [...tasks, 
+            {
+                id: Math.floor(Math.random() * 10000),
+                title,
+                description,
+                pririty,
+                category,
+                isComplety:false
+            },
+        ];
+        setTasks(newTask)
+    }
+
     const handleSubmit = (e) =>{
         e.preventDefault();
-        console.log(title, description, priority, category)
+        //console.log(title, description, priority, category)
         if(!title || !description || !priority || !category)return;
+
+        addToDo(title, description, priority, category);
 
         setTitle("");
         setDescription("");
         setPriority("");
         setCategory("");
-        console.log(title, description, priority, category);
+        //console.log(title, description, priority, category);
         
         changeAddTask();
-        addToDo(title, description, priority, category);
     }
+
 
     return(
         <div>
