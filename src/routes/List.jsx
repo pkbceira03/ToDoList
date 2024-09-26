@@ -1,5 +1,6 @@
 import React from "react";
 import useToDoContext from "../hook/useToDoContext";
+import { Link } from "react-router-dom";
 
 export default () => {
     const { tasks, setTasks } = useToDoContext(); 
@@ -31,6 +32,9 @@ export default () => {
 
         <>
             <h2>Minhas Tarefas</h2>
+            <div>
+                <button><Link to='/form'>Colocar nova Tarefa</Link></button>
+            </div>
 
             {
                 tasks.length > 0 ? (
@@ -47,7 +51,7 @@ export default () => {
                             <div>
                                 <button onClick={() => completyToDo(element.id)}>Completar</button>
                                 <button onClick={() => removeToDo(element.id)}>X</button>
-                                <button onClick={() => changePage()}>Alterar</button>
+                                <button><Link to="/alterar">Alterar</Link></button>
                             </div>
                         </div>
                     ))

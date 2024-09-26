@@ -1,14 +1,21 @@
 import React from "react";
 import { useState } from "react";
 import useToDoContext from "../hook/useToDoContext";
+import { useNavigate } from "react-router-dom";
 
 export default () => {
-    const { tasks, setTasks, changeAddTask } = useToDoContext(); 
+    const { tasks, setTasks } = useToDoContext(); 
 
     const [title, setTitle] = useState("")
     const [description, setDescription] = useState("")
     const [priority, setPriority] = useState("")
     const [category, setCategory] = useState("")
+
+    const navigate = useNavigate();
+
+    const goToList = () =>{
+        navigate("/list")
+    }
 
     function addToDo(title, description, pririty, category){
         const newTask = [...tasks, 
@@ -36,8 +43,7 @@ export default () => {
         setPriority("");
         setCategory("");
         //console.log(title, description, priority, category);
-        
-        changeAddTask();
+        goToList()
     }
 
 

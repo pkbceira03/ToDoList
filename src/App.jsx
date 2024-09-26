@@ -1,12 +1,10 @@
 import './App.css'
-import { useState } from 'react'
-import List from './components/List'
-import Form from './components/Form';
+import { Outlet } from 'react-router-dom'
 import { ToDoContext } from './context/ToDoContext'
+import { useState } from 'react'
 
 
 function App() {
-  const [addTask, setAddTask] = useState(false)
   const [tasks, setTasks] = useState([
     {
       id:1,
@@ -17,27 +15,10 @@ function App() {
       isComplety:false
     },
   ]);
-
-
-  function changeAddTask(){
-    setAddTask(!addTask)
-  }
-
+  
   return (
-    <ToDoContext.Provider value={{tasks, setTasks, changeAddTask}}>
-      {
-        addTask ?
-          <Form />
-        :
-        <>
-          <div>
-            <p>Deseja adicionar uma tarefa?</p>
-            <button onClick={changeAddTask}>Sim</button>
-          </div>
-          <List/>  
-        </>
-      }
-      
+    <ToDoContext.Provider value={{tasks, setTasks}}>
+      <Outlet/>
     </ToDoContext.Provider>
   )
 }
