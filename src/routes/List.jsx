@@ -51,7 +51,12 @@ export default () => {
                             <div>
                                 <button onClick={() => completyToDo(element.id)}>Completar</button>
                                 <button onClick={() => removeToDo(element.id)}>X</button>
-                                <button><Link to="/alterar">Alterar</Link></button>
+                                <button>
+                                    <Link to="/alterar" state={{ task: element }}>
+                                        Alterar
+                                    </Link>
+                                </button>
+
                             </div>
                         </div>
                     ))
