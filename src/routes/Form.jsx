@@ -2,6 +2,7 @@ import React from "react";
 import { useState } from "react";
 import useToDoContext from "../hook/useToDoContext";
 import { useNavigate } from "react-router-dom";
+import '../styles/Forms.css'
 
 export default () => {
     const { tasks, setTasks } = useToDoContext(); 
@@ -17,13 +18,13 @@ export default () => {
         navigate("/list")
     }
 
-    function addToDo(title, description, pririty, category){
+    function addToDo(title, description, priority, category){
         const newTask = [...tasks, 
             {
                 id: Math.floor(Math.random() * 10000),
                 title,
                 description,
-                pririty,
+                priority,
                 category,
                 isComplety:false
             },
@@ -33,7 +34,7 @@ export default () => {
 
     const handleSubmit = (e) =>{
         e.preventDefault();
-        //console.log(title, description, priority, category)
+        console.log(title, description, priority, category)
         if(!title || !description || !priority || !category)return;
 
         addToDo(title, description, priority, category);
@@ -48,8 +49,9 @@ export default () => {
 
 
     return(
-        <div>
+        <div className="form-container">
             <form onSubmit={handleSubmit}>
+                <h1>Coloque sua tarefa</h1>
                 <input 
                     type="text"
                     value={title}
@@ -64,23 +66,43 @@ export default () => {
                     onChange={(e) => setDescription(e.target.value)}
                 />
 
-                <select value={priority} onChange={(e) => setPriority(e.target.value)}>
-                    <option value="">Selecione a prioridade</option>
-                    <option value="Alto">Alto</option>
-                    <option value="Médio">Médio</option>
-                    <option value="Baixo">Baixo</option>
-                </select>
+                <div className="container-select">
+                    <select value={priority} onChange={(e) => setPriority(e.target.value)}>
+                        <option value="">Selecione a prioridade</option>
+                        <option value="Alto">Alto</option>
+                        <option value="Médio">Médio</option>
+                        <option value="Baixo">Baixo</option>
+                    </select>
 
-                <select value={category} onChange={(e) => setCategory(e.target.value)}>
-                    <option value="">Selecione uma categoria</option>
-                    <option value="Casa">Casa</option>
-                    <option value="Estudo">Estudo</option>
-                    <option value="Faculdade">Faculdade</option>
-                    <option value="Trabalho">Trabalho</option>
-                    <option value="Vida pessoal">Vida pessoal</option>
-                </select>
+                    <select value={category} onChange={(e) => setCategory(e.target.value)}>
+                        <option value="">Selecione uma categoria</option>
+                        <option value="Casa">Casa</option>
+                        <option value="Estudo">Estudo</option>
+                        <option value="Faculdade">Faculdade</option>
+                        <option value="Trabalho">Trabalho</option>
+                        <option value="Vida pessoal">Vida pessoal</option>
+                    </select>
+                </div>
 
-                <button>Enviar</button>
+                <div className="container-select">
+                    <select value={deadline} onChange={(e) => setPriority(e.target.value)}>
+                        <option value="">Selecione a prioridade</option>
+                        <option value="Hoje">Hoje</option>
+                        <option value="Essa semana">Essa semana</option>
+                        <option value="Próxima Semana">Próxima Semana</option>
+                        <option value="Próximo mês">Próximo mês</option>
+                    </select>
+
+                    <select value={timeToDo} onChange={(e) => setCategory(e.target.value)}>
+                        <option value="">Selecione uma categoria</option>
+                        <option value="1 hora">1 hora</option>
+                        <option value="2 horas">2 hora</option>
+                        <option value="4 horas">4 hora</option>
+                        <option value="Mais de 4 horas">Mais de 4 horas</option>
+                    </select>
+                </div>
+
+                <button className="link">Enviar</button>
             </form>
         </div>
     );

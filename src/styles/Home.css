@@ -1,0 +1,16 @@
+.container {
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    height: 100vh; 
+}
+
+.home {
+    color: white;
+    text-align: center; 
+    padding: 30px;
+    background-color:  #1A1A1A;
+    border-radius: 20px;
+    line-height: 30px;
+    width: 60%;
+}

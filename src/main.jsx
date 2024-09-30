@@ -5,7 +5,6 @@ import List from './routes/List.jsx'
 import Form from './routes/Form.jsx'
 import Home from './routes/Home.jsx'
 import ChangeToDo from './routes/ChangeToDo.jsx'
-import './index.css'
 import {createBrowserRouter, RouterProvider} from 'react-router-dom'
 
 

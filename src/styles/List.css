@@ -1,0 +1,49 @@
+.container-list{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+.change-page{
+    margin-bottom: 40px;
+}
+
+.space-list{
+    /* display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between; */
+    background-color: #1A1A1A;
+    padding: 30px;
+    border-radius: 20PX;
+}
+
+.container-text{
+    text-align: center;
+}
+
+.container-analysis{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around; 
+}
+
+.container-btns{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between; 
+}
+
+.btn-alterar{
+    background-color: #4863A0;
+}
+
+.btn-remove{
+    background-color: #FF4343;
+    color: white;
+    font-size: 20px;
+}
