@@ -11,6 +11,8 @@ export default () => {
     const [description, setDescription] = useState("")
     const [priority, setPriority] = useState("")
     const [category, setCategory] = useState("")
+    const [deadline, setDeadline] = useState("")
+    const [timeToDo, setTimeToDo] = useState("")
 
     const navigate = useNavigate();
 
@@ -18,7 +20,7 @@ export default () => {
         navigate("/list")
     }
 
-    function addToDo(title, description, priority, category){
+    function addToDo(title, description, priority, category, deadline, timeToDo){
         const newTask = [...tasks, 
             {
                 id: Math.floor(Math.random() * 10000),
@@ -26,6 +28,8 @@ export default () => {
                 description,
                 priority,
                 category,
+                deadline,
+                timeToDo,
                 isComplety:false
             },
         ];
@@ -34,15 +38,17 @@ export default () => {
 
     const handleSubmit = (e) =>{
         e.preventDefault();
-        console.log(title, description, priority, category)
-        if(!title || !description || !priority || !category)return;
+        console.log(title, description, priority, category, deadline, timeToDo)
+        if(!title || !description || !priority || !category || !deadline || !timeToDo)return;
 
-        addToDo(title, description, priority, category);
+        addToDo(title, description, priority, category, deadline, timeToDo);
 
         setTitle("");
         setDescription("");
         setPriority("");
         setCategory("");
+        setDeadline("");
+        setTimeToDo("");
         //console.log(title, description, priority, category);
         goToList()
     }
@@ -85,7 +91,7 @@ export default () => {
                 </div>
 
                 <div className="container-select">
-                    <select value={deadline} onChange={(e) => setPriority(e.target.value)}>
+                    <select value={deadline} onChange={(e) => setDeadline(e.target.value)}>
                         <option value="">Selecione a prioridade</option>
                         <option value="Hoje">Hoje</option>
                         <option value="Essa semana">Essa semana</option>
@@ -93,7 +99,7 @@ export default () => {
                         <option value="Próximo mês">Próximo mês</option>
                     </select>
 
-                    <select value={timeToDo} onChange={(e) => setCategory(e.target.value)}>
+                    <select value={timeToDo} onChange={(e) => setTimeToDo(e.target.value)}>
                         <option value="">Selecione uma categoria</option>
                         <option value="1 hora">1 hora</option>
                         <option value="2 horas">2 hora</option>

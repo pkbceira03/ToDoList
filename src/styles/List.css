@@ -3,7 +3,6 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100vh;
 }
 
 .change-page{
@@ -18,6 +17,8 @@
     background-color: #1A1A1A;
     padding: 30px;
     border-radius: 20PX;
+    margin: 5px;
+    width: 80%;
 }
 
 .container-text{
@@ -46,4 +47,17 @@
     background-color: #FF4343;
     color: white;
     font-size: 20px;
+}
+
+.priority-tasks{
+    display: flex;
+    flex-direction: row;
+    align-items: top;
+    justify-content: center;
+}
+
+.priority{
+    text-align: center;
+    padding: 5%;
+    width: 33%;
 }

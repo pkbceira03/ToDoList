@@ -2,40 +2,36 @@ import React from "react";
 import { Link } from "react-router-dom";
 import '../styles/List.css'
 
-export default ({tasks, setTasks}) => {
+export default ({priority, setPriority, tasks, setTasks}) => {
     
-
-    function removeToDo (id){
-        // console.log(tasks)
-        const newList = [...tasks];
-        const filterNewList = newList.filter((task) =>
-            task.id !== id ? task : null
-        )
-
-        setTasks(filterNewList)
-        // console.log(tasks)
+    function removeToDo(id) {
+        const updatedPriorityList = priority.filter((task) => task.id !== id);
+        const updatedTasksList = tasks.filter((task) => task.id !== id);
+    
+        setPriority(updatedPriorityList);  
+        setTasks(updatedTasksList); 
+        console.log(tasks)       
     }
-
-    function completyToDo (id){
-        const newList = [...tasks];
-        newList.map((task) =>
-            task.id === id ? (task.isComplety = !task.isComplety) : task
-        )
-
-        setTasks(newList)
+    
+    function completyToDo(id) {
+        const updatedPriorityList = priority.map((task) =>
+            task.id === id ? { ...task, isComplety: !task.isComplety } : task
+        );
+        const updatedTasksList = tasks.map((task) =>
+            task.id === id ? { ...task, isComplety: !task.isComplety } : task
+        );
+    
+        setPriority(updatedPriorityList);  
+        setTasks(updatedTasksList);        
     }
+    
 
     return (
 
         <div className="container-list">
-            <h2>Minhas Tarefas</h2>
-            <div >
-                <button className="change-page"><Link className="link" to='/form'>Colocar nova Tarefa</Link></button>
-            </div>
-
             {
-                tasks.length > 0 ? (
-                    tasks.map((element, index) => (
+                priority.length > 0 ? (
+                    priority.map((element, index) => (
                         <div className="space-list" key={index} style={{textDecoration: element.isComplety ? "line-through" : ""}}>
                             <div className="container-text">
                                 <p>{element.title}</p>

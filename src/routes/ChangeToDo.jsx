@@ -7,7 +7,6 @@ import { useNavigate } from "react-router-dom";
 export default () =>{
     const location = useLocation();
     const {task} = location.state;
-    console.log(task)
 
     const { tasks, setTasks } = useToDoContext(); 
 
@@ -15,6 +14,8 @@ export default () =>{
     const [description, setDescription] = useState(task.description);
     const [priority, setPriority] = useState(task.priority);
     const [category, setCategory] = useState(task.category);
+    const [deadline, setDeadline] = useState(task.deadline)
+    const [timeToDo, setTimeToDo] = useState(task.timeToDo)
 
     const navigate = useNavigate();
 
@@ -22,7 +23,7 @@ export default () =>{
         navigate("/list")
     }
 
-    function addToDo(id, title, description, pririty, category){
+    function addToDo(id, title, description, pririty, category, deadline, timeToDo){
         const changeTask = [...tasks];
         changeTask.map((element) =>
             element.id === id ? (
@@ -31,6 +32,8 @@ export default () =>{
                 element.description = description,
                 element.priority = pririty,
                 element.category = category,
+                element.deadline = deadline,
+                element.timeToDo = timeToDo,
                 element.isComplety = false
             ):
             element
@@ -40,21 +43,20 @@ export default () =>{
 
     const handleSubmit = (e) =>{
         e.preventDefault();
-        //console.log(title, description, priority, category)
+        console.log(title, description, priority, category, deadline, timeToDo)
+        if(!title || !description || !priority || !category || !deadline || !timeToDo)return;
 
-        if(!title || !description || !priority || !category)return;
-
-
-        addToDo(task.id, title, description, priority, category);
+        addToDo(task.id, title, description, priority, category, deadline, timeToDo);
 
         setTitle("");
         setDescription("");
         setPriority("");
         setCategory("");
+        setDeadline("");
+        setTimeToDo("");
         //console.log(title, description, priority, category);
         goToList()
     }
-
     return(
         <div className="form-container">
             <form onSubmit={handleSubmit}>
@@ -92,7 +94,7 @@ export default () =>{
                 </div>
 
                 <div className="container-select">
-                    <select value={deadline} onChange={(e) => setPriority(e.target.value)}>
+                    <select value={deadline} onChange={(e) => setDeadline(e.target.value)}>
                         <option value="">Selecione a prioridade</option>
                         <option value="Hoje">Hoje</option>
                         <option value="Essa semana">Essa semana</option>
@@ -100,7 +102,7 @@ export default () =>{
                         <option value="Próximo mês">Próximo mês</option>
                     </select>
 
-                    <select value={timeToDo} onChange={(e) => setCategory(e.target.value)}>
+                    <select value={timeToDo} onChange={(e) => setTimeToDo(e.target.value)}>
                         <option value="">Selecione uma categoria</option>
                         <option value="1 hora">1 hora</option>
                         <option value="2 horas">2 hora</option>
