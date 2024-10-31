@@ -1,36 +1,27 @@
-import {User, users} from '../model/userModel';
+import UserModel, {User} from '../model/userModel';
+import { v4 as uuidv4 } from 'uuid'
 
-export const getUsers = (): User[] =>{
-    return users
+export const getUsers = async (): Promise<User[]> =>{
+    return UserModel.find();
 }
 
-export const getUserById = (id:number): User|undefined =>{
-    return users.find(user => user.id === id);
+export const getUserById = async (id:string): Promise<User|null> =>{
+    return UserModel.findById(id);
 }
 
-export const addtUser = (name:string, email:string): User =>{
-    const newUser: User = {id:users.length + 1, name, email}
-    users.push(newUser)
+export const addtUser = async (name:string, email:string): Promise<User> =>{
+    const newUser = new UserModel({name,email})
+    await newUser.save()
     return newUser
 }
 
-export const updateUser = (id:number, name?:string, email?:string): User|undefined =>{
-    const user = getUserById(id)
-    if(user){
-        if(name) user.name = name;
-        if(email) user.email = email;
-    }
-
-    return user
+export const updateUser = async (id:string, name?:string, email?:string): Promise<User|null> =>{
+    const updateUser = await UserModel.findByIdAndUpdate(id,{name,email}, {new:true})
+    return updateUser
 }
 
-export const deleteUser = (id:number): boolean =>{
-    const index = users.findIndex(user => user.id === id)
-    if(index !== -1){
-        users.splice(index, 1)
-        return true
-    }
-
-    return false
+export const deleteUser = async (id:string): Promise<boolean> =>{
+    const deleteUser = await UserModel.findByIdAndDelete(id);
+    return deleteUser !== null
 
 }

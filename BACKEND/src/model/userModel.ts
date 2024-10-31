@@ -1,10 +1,16 @@
-export interface User {
-    id: number;
+import mongoose, {Document, Schema} from "mongoose";
+
+export interface User extends Document{
+    id: string;
     name: string;
     email: string;
 }
 
-export let users: User[] = [
-    { id: 1, name: 'João', email: 'joao@example.com' },
-    { id: 2, name: 'Maria', email: 'maria@example.com' }
-];
+const userSchema: Schema = new Schema({
+    name:{type: String, required:true},
+    email:{type: String, required:true,unique:true},
+});
+
+const UserModel = mongoose.model<User>('User', userSchema)
+
+export default UserModel
