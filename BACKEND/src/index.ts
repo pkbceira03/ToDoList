@@ -29,4 +29,6 @@ app.use('/api', usersRouter)
 
 app.listen(3000, ()=>{
     console.log('aplicação na porta 3000')
+    console.log("JWT_SECRET:", process.env.JWT_SECRET);
+
 })

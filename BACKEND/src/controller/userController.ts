@@ -1,76 +1,98 @@
 import * as userService from '../service/userService'
-import { Response, Request } from 'express'
+import UserModel, { User } from '../model/userModel';
+import { Response, Request, NextFunction } from 'express';
+import jwt from 'jsonwebtoken';
 
-export const getUsers = async (req:Request, res:Response,) =>{
+export const getUsers = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const users = await userService.getUsers();
-        res.status(200).json(users);
+        return res.status(200).json(users);
     } catch (error) {
-        res.status(500).json({menssagen:'Erro interno no servidor'})
+        return res.status(500).json({ mensagem: 'Erro interno no servidor' });
     }
-}
+};
 
-export const getUserById = async (req:Request, res:Response) =>{
+export const getUserById = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const id = req.params.id
-        const user = await userService.getUserById(id)
-        if(user){
-            res.status(200).json(user)
-        }else{
-            res.status(404).json({menssagem:'usuário não encontrado'})
+        const id = req.params.id;
+        const user = await userService.getUserById(id);
+        if (user) {
+            return res.status(200).json(user);
+        } else {
+            return res.status(404).json({ mensagem: 'Usuário não encontrado' });
         }
     } catch (error) {
-        res.status(500).json({menssagen:'Erro interno no servidor'})
+        return res.status(500).json({ mensagem: 'Erro interno no servidor' });
     }
-}
+};
 
-export const addUser = async (req:Request, res:Response) =>{
+export const addUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const {name, email} = req.body
+        const { name, email, password } = req.body;
 
-        if(!name || !email){
-            res.status(400).json({menssagem:'Coloque todos os dados'})
-        }else{
-            const newUser = await userService.addtUser(name,email)
-            res.status(201).json(newUser)
-        }  
+        if (!name || !email || !password) {
+            return res.status(400).json({ mensagem: 'Coloque todos os dados' });
+        } else {
+            const newUser = await userService.addUser(req.body);
+            return res.status(201).json(newUser);
+        }
     } catch (error) {
-        res.status(500).json({menssagen:'Erro interno no servidor'})
-    } 
-}
+        return res.status(500).json({ mensagem: 'Erro interno no servidor' });
+    }
+};
 
-export const updateUser = async (req:Request, res:Response) =>{
+export const updateUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const id = req.params.id
-        const {name, email} = req.body
+        const id = req.params.id;
+        const { name, email } = req.body;
 
-        if(!name && !email){
-            res.status(400).json({menssagem:'Coloque todos os dados'})
-        }else{
-            const updateUser = await userService.updateUser(id, name, email)
+        if (!name && !email) {
+            return res.status(400).json({ mensagem: 'Coloque todos os dados' });
+        } else {
+            const updateUser = await userService.updateUser(id, name, email);
 
-            if(updateUser){
-                res.status(200).json(updateUser)
-            }else{
-                res.status(404).json({menssagem:'usuário não encontrado'})
+            if (updateUser) {
+                return res.status(200).json(updateUser);
+            } else {
+                return res.status(404).json({ mensagem: 'Usuário não encontrado' });
             }
         }
     } catch (error) {
-        res.status(500).json({menssagen:'Erro interno no servidor'})
+        return res.status(500).json({ mensagem: 'Erro interno no servidor' });
     }
-}
+};
 
-export const deleteUser = async (req:Request, res:Response)=>{
+export const deleteUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const id = req.params.id
-        const isDeleted = await userService.deleteUser(id)
+        const id = req.params.id;
+        const isDeleted = await userService.deleteUser(id);
 
-        if(isDeleted){
-            res.status(200).json({menssagem:'Usuário deletado'})
-        }else{
-            res.status(200).json({menssagem:'Usuário não encontrado'})
+        if (isDeleted) {
+            return res.status(200).json({ mensagem: 'Usuário deletado' });
+        } else {
+            return res.status(404).json({ mensagem: 'Usuário não encontrado' });
         }
     } catch (error) {
-        res.status(500).json({menssagen:'Erro interno no servidor'})
+        return res.status(500).json({ mensagem: 'Erro interno no servidor' });
     }
-}
+};
+
+export const loginUser = async (req: Request, res: Response, next: NextFunction) => {
+    const { email, password } = req.body;
+
+    try {
+        const user = await UserModel.findOne({ email }) as User | null;
+        if (!user) return res.status(400).json({ mensagem: 'Email ou senha incorretos' });
+
+        const isMatch = await user.comparePassword(password);
+        if (!isMatch) return res.status(400).json({ mensagem: 'Email ou senha incorretos' });
+
+        const userId = typeof user._id === 'object' ? user._id.toString() : user._id;
+        const token = jwt.sign({ id: userId }, process.env.JWT_SECRET as string, { expiresIn: '1h' });
+
+        res.json({ token , userId});
+    } catch (error) {
+        res.status(500).json({ mensagem: 'Erro no servidor', error });
+    }
+};
+
