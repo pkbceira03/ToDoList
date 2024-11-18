@@ -21,7 +21,7 @@ mongoose.connect(process.env.MONGO_URI as string)
 
 
 //rotas
-app.use('/api', usersRouter)
+app.use(usersRouter)
 
 // app.get('/status', (req:Request, res:Response, next:NextFunction) => {
 //     res.status(200).send({mensagem: "funcionando"})
@@ -29,6 +29,5 @@ app.use('/api', usersRouter)
 
 app.listen(3000, ()=>{
     console.log('aplicação na porta 3000')
-    console.log("JWT_SECRET:", process.env.JWT_SECRET);
 
 })

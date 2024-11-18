@@ -1,7 +1,8 @@
-import { JwtPayload } from 'jsonwebtoken';
+import 'express';
+import jwt from 'jsonwebtoken';
 
-declare module 'express-serve-static-core' {
-    interface Request {
-        user?: string | JwtPayload;
-    }
+declare module 'express' {
+  export interface Request {
+    user?: string | jwt.JwtPayload; // Defina o tipo de `decoded` aqui
+  }
 }

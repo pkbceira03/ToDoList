@@ -33,7 +33,7 @@ export const addUser = async (req: Request, res: Response, next: NextFunction) =
         if (!name || !email || !password) {
             return res.status(400).json({ mensagem: 'Coloque todos os dados' });
         } else {
-            const newUser = await userService.addUser(req.body);
+            const newUser = await userService.addUser({ name, email, password });
             return res.status(201).json(newUser);
         }
     } catch (error) {
@@ -78,21 +78,23 @@ export const deleteUser = async (req: Request, res: Response, next: NextFunction
 };
 
 export const loginUser = async (req: Request, res: Response, next: NextFunction) => {
-    const { email, password } = req.body;
-
     try {
-        const user = await UserModel.findOne({ email }) as User | null;
+        const { email, password } = req.body;
+        if (!email || !password) return res.status(400).json({ mensagem: 'Coloque todos os dados' });
+
+        const user = await userService.getUserById(email);
         if (!user) return res.status(400).json({ mensagem: 'Email ou senha incorretos' });
 
         const isMatch = await user.comparePassword(password);
         if (!isMatch) return res.status(400).json({ mensagem: 'Email ou senha incorretos' });
 
-        const userId = typeof user._id === 'object' ? user._id.toString() : user._id;
-        const token = jwt.sign({ id: userId }, process.env.JWT_SECRET as string, { expiresIn: '1h' });
-
-        res.json({ token , userId});
+        
+        const token = jwt.sign({ id: user._id?.toString() }, process.env.JWT_SECRET as string, { expiresIn: '1h' });
+        return res.status(200).json({ token });
+        
     } catch (error) {
-        res.status(500).json({ mensagem: 'Erro no servidor', error });
+        return res.status(500).json({ mensagem: 'Erro no servidor', error });
     }
 };
+
 

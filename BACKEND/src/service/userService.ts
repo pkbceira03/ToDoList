@@ -1,5 +1,4 @@
 import UserModel, {User} from '../model/userModel';
-import { v4 as uuidv4 } from 'uuid'
 
 export const getUsers = async (): Promise<User[]> =>{
     return UserModel.find();
@@ -9,7 +8,7 @@ export const getUserById = async (id:string): Promise<User|null> =>{
     return UserModel.findById(id);
 }
 
-export const addUser = async (UserData:any): Promise<User> =>{
+export const addUser = async (UserData:Partial<User>): Promise<User> =>{
     const newUser = new UserModel(UserData)
     await newUser.save()
     return newUser

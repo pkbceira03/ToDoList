@@ -2,7 +2,6 @@ import mongoose, {Document, Schema, CallbackWithoutResultAndOptionalError} from 
 import bcrypt from 'bcrypt';
 
 export interface User extends Document{
-    id: string;
     name: string;
     email: string;
     password: string;
