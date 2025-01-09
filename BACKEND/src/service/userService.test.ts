@@ -71,6 +71,9 @@ describe("user service tests", () => {
         await Promise.all(usersData.map((data) => userService.addUser(data)))
         //chama o get user
         const users = await userService.getUsers();
+        //ordena o resultad
+        const sortedUsers = users.sort((a, b) => a.email.localeCompare(b.email));
+        const sortedUsersData = usersData.sort((a, b) => a.email.localeCompare(b.email));
         //verifica se o resultado é igual a dois, que foi o que colocamos no banco
         expect(users).toHaveLength(2)
         //compara os campos
@@ -128,21 +131,21 @@ describe("user service tests", () => {
       ------------------------------------
     */
 
-      it("should delete a user", async() => {
-        const userData = {
-            name: "Pedro",
-            email: "pedro@gmail.com",
-            password: "1234"
-        }
-        //adiciona user no banco
-        const user = await userService.addUser(userData)
-        //chama o deleteUser
-        const deleteResult = await userService.deleteUser(user.id)
-        //verifica de removeu
-        expect(deleteResult).toBe(true)
-        //verifica se encontra o user deletado
-        const fetchedUser = await userService.getUserById(user.id)
-        expect(fetchedUser).toBeNull()
-      })
+    it("should delete a user", async() => {
+    const userData = {
+        name: "Pedro",
+        email: "pedro@gmail.com",
+        password: "1234"
+    }
+    //adiciona user no banco
+    const user = await userService.addUser(userData)
+    //chama o deleteUser
+    const deleteResult = await userService.deleteUser(user.id)
+    //verifica de removeu
+    expect(deleteResult).toBe(true)
+    //verifica se encontra o user deletado
+    const fetchedUser = await userService.getUserById(user.id)
+    expect(fetchedUser).toBeNull()
+    })
 })
 
