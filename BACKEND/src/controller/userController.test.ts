@@ -3,6 +3,7 @@ import * as userController from './userController'
 import User from '../model/userModel'
 import mongoose from 'mongoose'
 import { MongoMemoryServer } from "mongodb-memory-server";
+import { toUSVString } from 'util';
 //import { decrypt } from 'dotenv';
 
 let mongoServer: MongoMemoryServer | null = null;
@@ -59,7 +60,13 @@ describe('User Controller', () => {
         return res 
     }
 
-    const mockNext = jest.fn(); 
+    const mockNext = jest.fn();
+    
+    /*
+      ------------------------------------
+      createUser
+      ------------------------------------
+    */
 
     describe('createUser', () => {
         it("should create a user", async () => {
@@ -96,6 +103,12 @@ describe('User Controller', () => {
         })
     })
 
+    /*
+      ------------------------------------
+      getAllUser
+      ------------------------------------
+    */
+
     describe('getAllUsers', () => {
         it('should return all users', async() => {
             await User.create({
@@ -118,6 +131,12 @@ describe('User Controller', () => {
         })
     })
 
+    /*
+      ------------------------------------
+      getUserById
+      ------------------------------------
+    */
+
     describe('getUserById', () => {
         it('should return user by id', async() => {
             const user = await User.create({
@@ -137,7 +156,86 @@ describe('User Controller', () => {
                 expect.objectContaining({name:'Pedro'})
             )
         })
+
+        it('should return a error if user dont exist', async() => {
+            const req = mockRequest({}, {id: new mongoose.Types.ObjectId().toString()})
+            const res = mockResponse()
+
+            await userController.getUserById(req,res,mockNext)
+
+            expect(res.status).toHaveBeenCalledWith(404)
+            expect(res.json).toHaveBeenCalledWith({mensagem:'Usuário não encontrado'})
+        })
     })
 
+    /*
+      ------------------------------------
+      updateUser
+      ------------------------------------
+    */
 
+    describe('updateUser', () => {
+        it('should update one user', async() => {
+            const user = await User.create({
+                name:'Pedro',
+                email: 'cabeceira2003@gmail.com',
+                password: '123456'
+            })
+            const update = {name:'Lucas'}
+            
+            const req = mockRequest(update, {id: user._id.toString()})
+            const res = mockResponse();
+
+            await userController.updateUser(req,res,mockNext)
+
+            expect(res.status).toHaveBeenCalledWith(200)
+            expect(res.json).toHaveBeenCalledWith(
+                expect.objectContaining({name:'Lucas'})
+            )
+        })
+
+        it('should return a error if user dont exist', async() => {
+            const req = mockRequest({name:'Pedro'}, {id:new mongoose.Types.ObjectId().toString()})
+            const res = mockResponse()
+
+            await userController.updateUser(req,res,mockNext)
+
+            expect(res.status).toHaveBeenCalledWith(404)
+            expect(res.json).toHaveBeenCalledWith({mensagem:'Usuário não encontrado'})
+        })
+    })
+
+    /*
+      ------------------------------------
+      deleteUser
+      ------------------------------------
+    */
+
+    describe('deleteUser', () => {
+        it('should delete one user', async() =>{
+            const user = await User.create({
+                name:'Pedro',
+                email: 'cabeceira2003@gmail.com',
+                password: '123456'
+            })
+
+            const req = mockRequest({}, {id: user._id.toString()})
+            const res = mockResponse()
+
+            await userController.deleteUser(req,res,mockNext)
+
+            expect(res.status).toHaveBeenCalledWith(200)
+            expect(res.json).toHaveBeenCalledWith({mensagem:'Usuário deletado'})
+        })
+
+        it('shouldreturn an error i user dont exist', async() => {
+            const req = mockRequest({}, { id:new mongoose.Types.ObjectId().toString()})
+            const res = mockResponse()
+
+            await userController.deleteUser(req,res,mockNext)
+
+            expect(res.status).toHaveBeenCalledWith(404)
+            expect(res.json).toHaveBeenCalledWith({mensagem: 'Usuário não encontrado'})
+        })
+    })
 })
