@@ -8,6 +8,10 @@ export const getUserById = async (id:string): Promise<User|null> =>{
     return UserModel.findById(id);
 }
 
+export const getUserByEmail = async (email:string) : Promise<User|null> =>{
+    return UserModel.findOne({email})
+}
+
 export const addUser = async (UserData:Partial<User>): Promise<User> =>{
     const newUser = new UserModel(UserData)
     await newUser.save()

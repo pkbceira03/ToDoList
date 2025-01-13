@@ -82,7 +82,7 @@ export const loginUser = async (req: Request, res: Response, next: NextFunction)
         const { email, password } = req.body;
         if (!email || !password) return res.status(400).json({ mensagem: 'Coloque todos os dados' });
 
-        const user = await userService.getUserById(email);
+        const user = await userService.getUserByEmail(email);
         if (!user) return res.status(400).json({ mensagem: 'Email ou senha incorretos' });
 
         const isMatch = await user.comparePassword(password);
